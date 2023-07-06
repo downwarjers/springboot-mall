@@ -1,16 +1,17 @@
 package com.eric.springbootmall.dao.impl;
 
 import com.eric.springbootmall.dao.ProductDao;
+import com.eric.springbootmall.dto.ProductRequest;
 import com.eric.springbootmall.model.Product;
 import com.eric.springbootmall.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 public class ProductImpl implements ProductDao {
@@ -34,7 +35,7 @@ public class ProductImpl implements ProductDao {
         strB.append("where product_id=:productId ");
 
         Map<String, Object> map = new HashMap<>();
-        map.put("productId",productId);
+        map.put("productId", productId);
 
         List<Product> productList = namedParameterJdbcTemplate.query(strB.toString(), map, new ProductRowMapper());
 
@@ -43,5 +44,46 @@ public class ProductImpl implements ProductDao {
             return productList.get(0);
         }
         return null;
+    }
+
+    @Override
+    public Integer createProduct(ProductRequest productRequest) {
+        StringBuilder strB = new StringBuilder();
+        strB.append("insert into product(product_name, ");
+        strB.append("category, ");
+        strB.append("image_url, ");
+        strB.append("price, ");
+        strB.append("stock, ");
+        strB.append("description, ");
+        strB.append("created_date, ");
+        strB.append("last_modified_date) ");
+        strB.append("values (:productName, ");
+        strB.append(":category, ");
+        strB.append(":imageUrl, ");
+        strB.append(":price, ");
+        strB.append(":stock, ");
+        strB.append(":description, ");
+        strB.append(":createdDate, ");
+        strB.append(":lastModifiedDate) ");
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("productName", productRequest.getProductName());
+        map.put("category", productRequest.getCategory().name());
+        map.put("imageUrl", productRequest.getImageUrl());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
+        Date now = new Date();
+        map.put("createdDate", now);
+        map.put("lastModifiedDate", now);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+
+        namedParameterJdbcTemplate.update(strB.toString(), new MapSqlParameterSource(map), keyHolder);
+
+        int productId = keyHolder.getKey().intValue();
+
+        return productId;
     }
 }
