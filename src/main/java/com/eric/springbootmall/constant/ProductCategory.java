@@ -1,7 +1,7 @@
 package com.eric.springbootmall.constant;
 
 public enum ProductCategory {
-    FOOd,
+    FOOD,
     CAR,
     E_BOOK
 }
