@@ -113,4 +113,15 @@ public class ProductImpl implements ProductDao {
         namedParameterJdbcTemplate.update(strB.toString(),map);
 
     }
+
+    @Override
+    public void deleteProduct(Integer productId) {
+        StringBuilder strB = new StringBuilder();
+        strB.append("delete from product ");
+        strB.append("where product_id=:productId ");
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+        namedParameterJdbcTemplate.update(strB.toString(),map);
+
+    }
 }
