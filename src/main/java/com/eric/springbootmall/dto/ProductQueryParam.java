@@ -6,6 +6,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class ProductQueryParam {
     private ProductCategory category;
     private String search;
+    private String orderBy;
+
+    public String getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(String orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    private String sort;
 
     public ProductCategory getCategory() {
         return category;
