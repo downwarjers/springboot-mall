@@ -12,9 +12,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
+@Validated
 public class ProductController {
 
     @Autowired
@@ -23,17 +26,23 @@ public class ProductController {
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
             //查詢條件
-            @RequestParam(required = false) ProductCategory category,
-            @RequestParam(required = false) String search,
+            @RequestParam(required = false) ProductCategory category,//種類
+            @RequestParam(required = false) String search,//搜尋
             //排序
-            @RequestParam(defaultValue = "created_date") String orderBy,
-            @RequestParam(defaultValue = "desc") String sort
+            @RequestParam(defaultValue = "created_date") String orderBy,//欄位
+            @RequestParam(defaultValue = "desc") String sort,//排法
+            //分頁
+            @RequestParam(defaultValue = "5") @Max(1000) @Min(0) Integer limit,//資料筆數
+            @RequestParam(defaultValue = "0") @Min(0) Integer offset//略過筆數
+
     ) {
-        ProductQueryParam productQueryParam=new ProductQueryParam();
+        ProductQueryParam productQueryParam = new ProductQueryParam();
         productQueryParam.setCategory(category);
         productQueryParam.setSearch(search);
         productQueryParam.setOrderBy(orderBy);
         productQueryParam.setSort(sort);
+        productQueryParam.setLimit(limit);
+        productQueryParam.setOffset(offset);
         List<Product> list = productService.getProducts(productQueryParam);
         return ResponseEntity.ok().body(list);
     }
