@@ -1,6 +1,7 @@
 package com.eric.springbootmall.service;
 
 import com.eric.springbootmall.constant.ProductCategory;
+import com.eric.springbootmall.dto.ProductQueryParam;
 import com.eric.springbootmall.dto.ProductRequest;
 import com.eric.springbootmall.model.Product;
 
@@ -15,5 +16,5 @@ public interface ProductService {
 
     void deleteProduct(Integer productId);
 
-    List<Product> getProducts(ProductCategory category, String search);
+    List<Product> getProducts(ProductQueryParam productQueryParam);
 }

@@ -2,6 +2,7 @@ package com.eric.springbootmall.dao.impl;
 
 import com.eric.springbootmall.constant.ProductCategory;
 import com.eric.springbootmall.dao.ProductDao;
+import com.eric.springbootmall.dto.ProductQueryParam;
 import com.eric.springbootmall.dto.ProductRequest;
 import com.eric.springbootmall.model.Product;
 import com.eric.springbootmall.rowmapper.ProductRowMapper;
@@ -123,7 +124,7 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
-    public List<Product> getProducts(ProductCategory category, String search) {
+    public List<Product> getProducts(ProductQueryParam productQueryParam) {
         String sql = "select product_id, " +
                 "product_name, " +
                 "category, " +
@@ -137,13 +138,13 @@ public class ProductDaoImpl implements ProductDao {
                 "where 1=1 ";
 
         Map<String, Object> map = new HashMap<>();
-        if (category != null) {
+        if (productQueryParam.getCategory() != null) {
             sql += "and category=:category ";
-            map.put("category", category.name());
+            map.put("category", productQueryParam.getCategory().name());
         }
-        if (search != null) {
+        if (productQueryParam.getSearch() != null) {
             sql += "and product_name like :search ";
-            map.put("search", "%"+search+"%");
+            map.put("search", "%"+productQueryParam.getSearch() +"%");
         }
 
 
