@@ -1,17 +1,18 @@
 package com.eric.springbootmall.dto;
 
 import com.eric.springbootmall.constant.ProductCategory;
-import org.springframework.lang.NonNull;
+
+import javax.validation.constraints.NotNull;
 
 public class ProductRequest {
     private String productName;
-    @NonNull
+    @NotNull
     private ProductCategory category;
-    @NonNull
+    @NotNull
     private String imageUrl;
-    @NonNull
+    @NotNull
     private Integer price;
-    @NonNull
+    @NotNull
     private Integer stock;
     private String description;
 
